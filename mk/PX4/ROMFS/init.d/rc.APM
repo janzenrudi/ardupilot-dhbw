@@ -316,6 +316,16 @@ then
   fi
 fi
 
+
+# Start HoTT for ArduPilot
+#if [ $BOARD == FMUv2 ]
+#then
+#	ap_hott start -d /dev/ttyS6
+#else
+#	#free ttyS1 for ap_hott
+#	set deviceD /dev/null
+#	ap_hott start -d /dev/ttyS1
+#fi
 echo Starting ArduPilot $deviceA $deviceC $deviceD
 if ArduPilot -d $deviceA -d2 $deviceC -d3 $deviceD start
 then
