@@ -165,8 +165,7 @@ static AP_Vehicle::MultiCopter aparm;
 // Local modules
 #include "Parameters.h"
 
-//HOTT
-#include <HF_Led.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // cliSerial
