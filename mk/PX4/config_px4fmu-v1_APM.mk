@@ -8,7 +8,7 @@
 ROMFS_ROOT	 = $(SKETCHBOOK)/mk/PX4/ROMFS
 
 MODULES		+= $(APM_MODULE_DIR)
-MODULES		+= ./../../libraries/HF_Hott/
+MODULES		+= $(SKETCHBOOK)/HF_Hott
 
 #
 # Board support modules
