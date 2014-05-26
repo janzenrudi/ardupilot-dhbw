@@ -112,6 +112,18 @@ public:
         k_param_hybrid_brake_rate,
         k_param_hybrid_brake_angle_max,
         k_param_pilot_accel_z,          // 48
+        k_param_serial0_baud,
+        k_param_serial1_baud,
+        k_param_serial2_baud,
+
+        k_param_sensor1,                // Sonar Sensors SRF01
+        k_param_sensor2,
+        k_param_sensor3,
+        k_param_sensor4,
+        k_param_sensor5,
+        k_param_sensor6,
+        k_param_sensor7,
+        k_param_sensor8,
 
         // 65: AP_Limits Library
         k_param_limits = 65,            // deprecated - remove
@@ -162,10 +174,10 @@ public:
         k_param_gcs1,
         k_param_sysid_this_mav,
         k_param_sysid_my_gcs,
-        k_param_serial1_baud,
+        k_param_serial1_baud_old, // deprecated
         k_param_telem_delay,
         k_param_gcs2,
-        k_param_serial2_baud,
+        k_param_serial2_baud_old, // deprecated
 
         //
         // 140: Sensor parameters
@@ -308,9 +320,10 @@ public:
     //
     AP_Int16        sysid_this_mav;
     AP_Int16        sysid_my_gcs;
-    AP_Int8         serial1_baud;
+    AP_Int16        serial0_baud;
+    AP_Int16        serial1_baud;
 #if MAVLINK_COMM_NUM_BUFFERS > 2
-    AP_Int8         serial2_baud;
+    AP_Int16        serial2_baud;
 #endif
     AP_Int8         telem_delay;
 
@@ -424,6 +437,17 @@ public:
     AP_Float                acro_balance_roll;
     AP_Float                acro_balance_pitch;
     AP_Int8                 acro_trainer;
+
+    // Sonar Sensors SFR01
+    AP_Int16                sensor1;
+    AP_Int16                sensor2;
+    AP_Int16                sensor3;
+    AP_Int16                sensor4;
+    AP_Int16                sensor5;
+    AP_Int16                sensor6;
+    AP_Int16                sensor7;
+    AP_Int16                sensor8;
+
 
     // PI/D controllers
     AC_PID                  pid_rate_roll;

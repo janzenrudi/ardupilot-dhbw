@@ -27,7 +27,7 @@
 #define MAVLINK_COMM_NUM_BUFFERS 2
 #else
 // allow three telemetry ports on other boards
-#define MAVLINK_COMM_NUM_BUFFERS 3
+#define MAVLINK_COMM_NUM_BUFFERS 2      // disable uartD at Mavlink
 #endif
 
 #include "include/mavlink/v1.0/ardupilotmega/version.h"

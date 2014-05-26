@@ -81,6 +81,10 @@ static bool set_mode(uint8_t mode)
             success = flip_init(ignore_checks);
             break;
 
+        case COL_AV:
+            success = col_av_init(ignore_checks);
+            break;
+
 #if AUTOTUNE_ENABLED == ENABLED
         case AUTOTUNE:
             success = autotune_init(ignore_checks);
@@ -185,6 +189,10 @@ static void update_flight_mode()
             flip_run();
             break;
 
+        case COL_AV:
+            col_av_run();
+            break;
+
 #if AUTOTUNE_ENABLED == ENABLED
         case AUTOTUNE:
             autotune_run();
@@ -247,6 +255,7 @@ static bool manual_flight_mode(uint8_t mode) {
         case STABILIZE:
         case DRIFT:
         case SPORT:
+        case COL_AV:
             return true;
         default:
             return false;
@@ -300,6 +309,9 @@ print_flight_mode(AP_HAL::BetterStream *port, uint8_t mode)
         break;
     case FLIP:
         port->print_P(PSTR("FLIP"));
+        break;
+    case COL_AV:
+        port->print_P(PSTR("COL_AV"));
         break;
     case AUTOTUNE:
         port->print_P(PSTR("AUTOTUNE"));

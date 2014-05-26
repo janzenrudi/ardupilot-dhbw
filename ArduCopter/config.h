@@ -775,4 +775,8 @@
 #define FIRMWARE_STRING THISFIRMWARE " (" GIT_VERSION ")"
 #endif
 
+#ifndef SENSOR_DEFAULT
+    #define SENSOR_DEFAULT 50   // Default value for the sonar sensors
+#endif
+
 #endif // __ARDUCOPTER_CONFIG_H__

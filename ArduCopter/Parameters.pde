@@ -52,20 +52,27 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @User: Advanced
     GSCALAR(sysid_my_gcs,   "SYSID_MYGCS",     255),
 
+    // @Param: SERIAL0_BAUD
+    // @DisplayName: USB Console Baud Rate
+    // @Description: The baud rate used on the USB console. The APM2 can support all baudrates up to 115, and also can support 500. The PX4 can support rates of up to 1500. If you setup a rate you cannot support on APM2 and then can't connect to your board you should load a firmware from a different vehicle type. That will reset all your parameters to defaults.
+    // @Values: 1:1200,2:2400,4:4800,9:9600,19:19200,38:38400,57:57600,111:111100,115:115200,500:500000,921:921600,1500:1500000
+    // @User: Standard
+    GSCALAR(serial0_baud,           "SERIAL0_BAUD",   SERIAL0_BAUD/1000),
+
     // @Param: SERIAL1_BAUD
     // @DisplayName: Telemetry Baud Rate
-    // @Description: The baud rate used on the first telemetry port
-    // @Values: 1:1200,2:2400,4:4800,9:9600,19:19200,38:38400,57:57600,111:111100,115:115200
+    // @Description: The baud rate used on the first telemetry port. The APM2 can support all baudrates up to 115, and also can support 500. The PX4 can support rates of up to 1500. If you setup a rate you cannot support on APM2 and then can't connect to your board you should load a firmware from a different vehicle type. That will reset all your parameters to defaults.
+    // @Values: 1:1200,2:2400,4:4800,9:9600,19:19200,38:38400,57:57600,111:111100,115:115200,500:500000,921:921600,1500:1500000
     // @User: Standard
-    GSCALAR(serial1_baud,   "SERIAL1_BAUD",     SERIAL1_BAUD/1000),
+    GSCALAR(serial1_baud,           "SERIAL1_BAUD",   SERIAL1_BAUD/1000),
 
 #if MAVLINK_COMM_NUM_BUFFERS > 2
     // @Param: SERIAL2_BAUD
     // @DisplayName: Telemetry Baud Rate
-    // @Description: The baud rate used on the seconds telemetry port
-    // @Values: 1:1200,2:2400,4:4800,9:9600,19:19200,38:38400,57:57600,111:111100,115:115200
+    // @Description: The baud rate used on the second telemetry port. The APM2 can support all baudrates up to 115, and also can support 500. The PX4 can support rates of up to 1500. If you setup a rate you cannot support on APM2 and then can't connect to your board you should load a firmware from a different vehicle type. That will reset all your parameters to defaults.
+    // @Values: 1:1200,2:2400,4:4800,9:9600,19:19200,38:38400,57:57600,111:111100,115:115200,500:500000,921:921600,1500:1500000
     // @User: Standard
-    GSCALAR(serial2_baud,   "SERIAL2_BAUD",     SERIAL2_BAUD/1000),
+    GSCALAR(serial2_baud,           "SERIAL2_BAUD",   SERIAL2_BAUD/1000),
 #endif
 
     // @Param: TELEM_DELAY
@@ -294,42 +301,42 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @Param: FLTMODE1
     // @DisplayName: Flight Mode 1
     // @Description: Flight mode when Channel 5 pwm is <= 1230
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode1, "FLTMODE1",               FLIGHT_MODE_1),
 
     // @Param: FLTMODE2
     // @DisplayName: Flight Mode 2
     // @Description: Flight mode when Channel 5 pwm is >1230, <= 1360
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode2, "FLTMODE2",               FLIGHT_MODE_2),
 
     // @Param: FLTMODE3
     // @DisplayName: Flight Mode 3
     // @Description: Flight mode when Channel 5 pwm is >1360, <= 1490
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode3, "FLTMODE3",               FLIGHT_MODE_3),
 
     // @Param: FLTMODE4
     // @DisplayName: Flight Mode 4
     // @Description: Flight mode when Channel 5 pwm is >1490, <= 1620
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode4, "FLTMODE4",               FLIGHT_MODE_4),
 
     // @Param: FLTMODE5
     // @DisplayName: Flight Mode 5
     // @Description: Flight mode when Channel 5 pwm is >1620, <= 1749
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode5, "FLTMODE5",               FLIGHT_MODE_5),
 
     // @Param: FLTMODE6
     // @DisplayName: Flight Mode 6
     // @Description: Flight mode when Channel 5 pwm is >=1750
-    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid
+    // @Values: 0:Stabilize,1:Acro,2:AltHold,3:Auto,4:Guided,5:Loiter,6:RTL,7:Circle,9:Land,10:OF_Loiter,11:Drift,13:Sport,16:Hybrid,17:Col_Av
     // @User: Standard
     GSCALAR(flight_mode6, "FLTMODE6",               FLIGHT_MODE_6),
 
@@ -1061,6 +1068,54 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @Group: MIS_
     // @Path: ../libraries/AP_Mission/AP_Mission.cpp
     GOBJECT(mission, "MIS_",       AP_Mission),
+
+    // @Param: SENSOR1
+    // @DisplayName: Distance Sensor 1
+    // @Description: The actual distance measured from Sensor 1
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor1, "SENSOR1", SENSOR_DEFAULT),
+
+    // @Param: SENSOR2
+    // @DisplayName: Distance Sensor 2
+    // @Description: The actual distance measured from Sensor 2
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor2, "SENSOR2", SENSOR_DEFAULT),
+
+    // @Param: SENSOR3
+    // @DisplayName: Distance Sensor 3
+    // @Description: The actual distance measured from Sensor 3
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor3, "SENSOR3", SENSOR_DEFAULT),
+
+    // @Param: SENSOR4
+    // @DisplayName: Distance Sensor 4
+    // @Description: The actual distance measured from Sensor 4
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor4, "SENSOR4", SENSOR_DEFAULT),
+
+    // @Param: SENSOR5
+    // @DisplayName: Distance Sensor 5
+    // @Description: The actual distance measured from Sensor 5
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor5, "SENSOR5", SENSOR_DEFAULT),
+
+    // @Param: SENSOR6
+    // @DisplayName: Distance Sensor 6
+    // @Description: The actual distance measured from Sensor 6
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor6, "SENSOR6", SENSOR_DEFAULT),
+
+    // @Param: SENSOR7
+    // @DisplayName: Distance Sensor 7
+    // @Description: The actual distance measured from Sensor 7
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor7, "SENSOR7", SENSOR_DEFAULT),
+
+    // @Param: SENSOR8
+    // @DisplayName: Distance Sensor 8
+    // @Description: The actual distance measured from Sensor 8
+    // @Range: 0 - 600 cm
+    GSCALAR(sensor8, "SENSOR8", SENSOR_DEFAULT),
 
     AP_VAREND
 };
