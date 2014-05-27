@@ -3,6 +3,9 @@
 /*
  * control_col_av.pde - init and run calls for stabilize flight mode
  */
+ 
+#define DISTANCE_THRESHOLD 100
+#define MAX_ANGLE 4500
 
 // col_av_init - initialise collision avoidance controller
 static bool col_av_init(bool ignore_checks)
@@ -32,9 +35,12 @@ static void col_av_run()
 
     // convert pilot input to lean angles
     // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
-    if(g.sensor1 < 30)
+    
+    int16_t pitch_angle = brakeFunction(g.sensor1)
+    
+    if(g.sensor1 < 100)
     {
-        get_pilot_desired_lean_angles(g.rc_1.control_in, 0, target_roll, target_pitch);
+        get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
     }
     else
     {
@@ -59,4 +65,22 @@ static void col_av_run()
 
     // output pilot's throttle
     attitude_control.set_throttle_out(pilot_throttle_scaled, true);
+}
+
+static int16_t brakeFunction(const int16_t iDistance_p)
+{
+	int16_t iNormedDistance_l = iDistance_p / DISTANCE_THRESHOLD;
+	int16_t iNormedAngle_l = 0;	
+	int16_t iAngle_l = 0;
+	if(iDistance_p < DISTANCE_THRESHOLD/2)
+	{
+		iNormedAngle_l = 1/(10*iNormedDistance_l);
+	}
+	else
+	{
+		iNormedAngle_l = -0.4*iNormedDistance_l + 0.4;
+	}
+	iAngle_l = iNormedAngle_l * MAX_ANGLE;
+	
+	return iAngle_l; 
 }
