@@ -1,6 +1,6 @@
 /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
-#define USART5 hal.uartD
+#define USART5 hal.uartC
 
 #ifdef USERHOOK_INIT
 void userhook_init()
