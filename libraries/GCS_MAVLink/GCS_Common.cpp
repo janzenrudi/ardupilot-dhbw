@@ -38,12 +38,12 @@ GCS_MAVLINK::init(AP_HAL::UARTDriver *port)
         mavlink_comm_0_port = port;
         chan = MAVLINK_COMM_0;
         initialised = true;
-    } else if (port == (AP_HAL::BetterStream*)hal.uartC) {
+    } else if (port == (AP_HAL::BetterStream*)hal.uartD) {
         mavlink_comm_1_port = port;
         chan = MAVLINK_COMM_1;
         initialised = true;
 #if MAVLINK_COMM_NUM_BUFFERS > 2
-    } else if (port == (AP_HAL::BetterStream*)hal.uartD) {
+    } else if (port == (AP_HAL::BetterStream*)hal.uartC) {
         mavlink_comm_2_port = port;
         chan = MAVLINK_COMM_2;
         initialised = true;
@@ -414,10 +414,10 @@ bool GCS_MAVLINK::have_flow_control(void)
         return hal.gpio->usb_connected() || hal.uartA->get_flow_control() != AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE;
 
     case MAVLINK_COMM_1:
-        return hal.uartC->get_flow_control() != AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE;
+        return hal.uartD->get_flow_control() != AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE;
 
     case MAVLINK_COMM_2:
-        return hal.uartD != NULL && hal.uartD->get_flow_control() != AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE;
+        return hal.uartC != NULL && hal.uartC->get_flow_control() != AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE;
 
     default:
         break;

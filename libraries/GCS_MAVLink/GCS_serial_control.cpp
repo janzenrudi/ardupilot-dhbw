@@ -44,11 +44,11 @@ void GCS_MAVLINK::handle_serial_control(mavlink_message_t *msg, AP_GPS &gps)
 
     switch (packet.device) {
     case SERIAL_CONTROL_DEV_TELEM1:
-        port = hal.uartC;
+        port = hal.uartD;
         lock_channel(MAVLINK_COMM_1, exclusive);
         break;
     case SERIAL_CONTROL_DEV_TELEM2:
-        port = hal.uartD;
+        port = hal.uartC;
         lock_channel(MAVLINK_COMM_2, exclusive);
         break;
     case SERIAL_CONTROL_DEV_GPS1:
