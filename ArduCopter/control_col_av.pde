@@ -6,6 +6,7 @@
  
 #define DISTANCE_THRESHOLD 100
 #define MAX_ANGLE 4500
+#define THIRTY_DEGREE_IN_RADIAN 0.52359878
 
 // col_av_init - initialise collision avoidance controller
 static bool col_av_init(bool ignore_checks)
@@ -67,7 +68,7 @@ static void col_av_run()
     attitude_control.set_throttle_out(pilot_throttle_scaled, true);
 }
 
-/*
+
 static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
 {
     // Fuer jeden Sensor wird abhaengig von seiner Ausrichtung 
@@ -90,19 +91,19 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     // Sensor vorne
     if(g.sensor1 < DISTANCE_THRESHOLD)
     {
-        brakeFunction(g.sonar1, aiPitchAngles_l[0]);    //Berechnung des Pitch-Winkels
+        aiPitchAngles_l[0] = brakeFunction(g.sensor1);    //Berechnung des Pitch-Winkels
 
         aiPitchAngles_l[0] *= -1;   // Ausweichen nach hinten
     }
-
+	
     // Sensor vorne rechts
     if(g.sensor2 < DISTANCE_THRESHOLD)
     {
-        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar2); //Roll-Anteil
-        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar2);// Pitch-Anteil
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor2); //Roll-Anteil
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor2);// Pitch-Anteil
     
-        brakeFunction(iRollDistance_l, aiRollAngles_l[1]);
-        brakeFunction(iPitchDistance_l, aiPitchAngles_l[1]);
+        aiRollAngles_l[1] = brakeFunction(iRollDistance_l);
+        aiPitchAngles_l[1] = brakeFunction(iPitchDistance_l);
         
         aiRollAngles_l[1] *= -1;    // Ausweichen nach links
         aiPitchAngles_l[1] *= -1;   // Ausweichen nach hinten
@@ -112,11 +113,11 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     // Sensor hinten rechts
     if(g.sensor3 < DISTANCE_THRESHOLD)
     {
-        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar3); 
-        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar3);
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor3); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor3);
     
-        brakeFunction(iRollDistance_l, aiRollAngles_l[2]);
-        brakeFunction(iPitchDistance_l, aiPitchAngles_l[2]);
+        aiRollAngles_l[2] = brakeFunction(iRollDistance_l);
+        aiPitchAngles_l[2] = brakeFunction(iPitchDistance_l);
 
         aiRollAngles_l[2] *= -1;    // Ausweichen nach links
     }
@@ -124,33 +125,90 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     // Sensor hinten
     if(g.sensor4 < DISTANCE_THRESHOLD)
     {
-        brakeFunction(g.sonar4, aiPitchAngles_l[3]); 
+        aiPitchAngles_l[3] = brakeFunction(g.sensor4); 
     }
 
     // Sensor hinten links
     if(g.sensor5 < DISTANCE_THRESHOLD)
     {
-        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar5); 
-        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar5);
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor5); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor5);
     
-        brakeFunction(iRollDistance_l, aiRollAngles_l[4]);
-        brakeFunction(iPitchDistance_l, aiPitchAngles_l[4]);
+        aiRollAngles_l[4] = brakeFunction(iRollDistance_l);
+        aiPitchAngles_l[4] = brakeFunction(iPitchDistance_l);
     }
 
     // Sensor vorne links
     if(g.sensor6 < DISTANCE_THRESHOLD)
     {
-        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar6); 
-        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar6);
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor6); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sensor6);
     
-        brakeFunction(iRollDistance_l, aiRollAngles_l[5]);
-        brakeFunction(iPitchDistance_l, aiPitchAngles_l[5]);
+        aiRollAngles_l[5] = brakeFunction(iRollDistance_l);
+        aiPitchAngles_l[5] = brakeFunction(iPitchDistance_l);
 
         aiPitchAngles_l[5] *= -1;   //Ausweichen nach hinten
     }
     
+    
+    // Minimale und maximale Winkel berechnen
+    int16_t iMaxRollAngle_l = 0;
+    int16_t iMinRollAngle_l = 0;
+    int16_t iMaxPitchAngle_l = 0;
+    int16_t iMinPitchAngle_l = 0;
+    
+    for(int i=0 ; i<6 ; ++i)
+    {
+    	if(aiRollAngles_l[i] < iMinRollAngle_l)
+    	{
+    		iMinRollAngle_l = aiRollAngles_l[i];
+    	}
+    	else
+    	{
+    		iMaxRollAngle_l = aiRollAngles_l[i];
+    	}
+    	
+    	if(aiPitchAngles_l[i] < iMinPitchAngle_l)
+    	{
+    		iMinPitchAngle_l = aiPitchAngles_l[i];
+    	}
+    	else
+    	{
+    		iMaxPitchAngle_l = aiPitchAngles_l[i];
+    	}
+    }
+    
+    // Wenn sowohl nach links (Roll negativ), als auch nach rechts (Roll positiv) 
+    // ausgewichen werden soll, dann wird der Mittelwert gebildet.
+    if(iMaxRollAngle_l != 0 && iMinRollAngle_l != 0)
+    {
+    	iRollAngle_p = iMaxRollAngle_l + iMinRollAngle_l;
+    }
+    else if(iMaxRollAngle_l != 0 && iMinRollAngle_l == 0)
+    {
+    	iRollAngle_p = iMaxRollAngle_l;
+    }
+    else
+    {
+    	iRollAngle_p = iMinRollAngle_l;
+    }
+    
+    // Wenn sowohl nach hinten (Pitch negativ), als auch nach vorne (Pitch positiv) 
+    // ausgewichen werden soll, dann wird der Mittelwert gebildet.
+    if(iMaxPitchAngle_l != 0 && iMinPitchAngle_l != 0)
+    {
+    	iPitchAngle_p = iMaxPitchAngle_l + iMinRollAngle_l;
+    }
+    else if(iMaxPitchAngle_l != 0 && iMinPitchAngle_l == 0)
+    {
+    	iPitchAngle_p = iMaxPitchAngle_l;
+    }
+    else
+    {
+    	iPitchAngle_p = iMinPitchAngle_l;
+    }
 }
-*/
+
 static int16_t brakeFunction(const int16_t iDistance_p)
 {
 	int16_t iNormedDistance_l = iDistance_p / DISTANCE_THRESHOLD;
