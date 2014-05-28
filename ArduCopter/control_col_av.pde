@@ -36,7 +36,7 @@ static void col_av_run()
     // convert pilot input to lean angles
     // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
     
-    int16_t pitch_angle = brakeFunction(g.sensor1)
+    int16_t pitch_angle = brakeFunction(g.sensor1);
     
     if(g.sensor1 < 100)
     {
@@ -67,6 +67,90 @@ static void col_av_run()
     attitude_control.set_throttle_out(pilot_throttle_scaled, true);
 }
 
+/*
+static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
+{
+    // Fuer jeden Sensor wird abhaengig von seiner Ausrichtung 
+    // und dem gemessenen Abstand jeweils ein Winkel für Roll
+    // und Pitch berechnet. Die Berechnung wird nur bei Unterschreitung
+    // des Schwellwerts durchgeführt. Der Schwellwert gibt den minimalen
+    // Abstand des Hexacopters von einem Objekt an.
+    // Winkel = 0 -> Horizontal
+    // Winkel > 0 -> Pitch: nach vorne neigen, Roll: nach rechts neigen
+    // Winkel < 0 -> Pitch: nach hinten neigen, Roll: nach links neigen
+
+    // Winkel-Variablen
+    int16_t iRollDistance_l = 0;        
+    int16_t iPitchDistance_l = 0;
+    
+    int16_t aiPitchAngles_l[6] = {0}; // Front, FrontLeft, BackLeft, Back, BackRight, FrontRight
+    int16_t aiRollAngles_l[6] = {0}; // Front, FrontLeft, BackLeft, Back, BackRight, FrontRight
+    
+    
+    // Sensor vorne
+    if(g.sensor1 < DISTANCE_THRESHOLD)
+    {
+        brakeFunction(g.sonar1, aiPitchAngles_l[0]);    //Berechnung des Pitch-Winkels
+
+        aiPitchAngles_l[0] *= -1;   // Ausweichen nach hinten
+    }
+
+    // Sensor vorne rechts
+    if(g.sensor2 < DISTANCE_THRESHOLD)
+    {
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar2); //Roll-Anteil
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar2);// Pitch-Anteil
+    
+        brakeFunction(iRollDistance_l, aiRollAngles_l[1]);
+        brakeFunction(iPitchDistance_l, aiPitchAngles_l[1]);
+        
+        aiRollAngles_l[1] *= -1;    // Ausweichen nach links
+        aiPitchAngles_l[1] *= -1;   // Ausweichen nach hinten
+        
+    }
+    
+    // Sensor hinten rechts
+    if(g.sensor3 < DISTANCE_THRESHOLD)
+    {
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar3); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar3);
+    
+        brakeFunction(iRollDistance_l, aiRollAngles_l[2]);
+        brakeFunction(iPitchDistance_l, aiPitchAngles_l[2]);
+
+        aiRollAngles_l[2] *= -1;    // Ausweichen nach links
+    }
+
+    // Sensor hinten
+    if(g.sensor4 < DISTANCE_THRESHOLD)
+    {
+        brakeFunction(g.sonar4, aiPitchAngles_l[3]); 
+    }
+
+    // Sensor hinten links
+    if(g.sensor5 < DISTANCE_THRESHOLD)
+    {
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar5); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar5);
+    
+        brakeFunction(iRollDistance_l, aiRollAngles_l[4]);
+        brakeFunction(iPitchDistance_l, aiPitchAngles_l[4]);
+    }
+
+    // Sensor vorne links
+    if(g.sensor6 < DISTANCE_THRESHOLD)
+    {
+        iRollDistance_l = int16_t((double)cos(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar6); 
+        iPitchDistance_l = int16_t((double)sin(THIRTY_DEGREE_IN_RADIAN) * (double)g.sonar6);
+    
+        brakeFunction(iRollDistance_l, aiRollAngles_l[5]);
+        brakeFunction(iPitchDistance_l, aiPitchAngles_l[5]);
+
+        aiPitchAngles_l[5] *= -1;   //Ausweichen nach hinten
+    }
+    
+}
+*/
 static int16_t brakeFunction(const int16_t iDistance_p)
 {
 	int16_t iNormedDistance_l = iDistance_p / DISTANCE_THRESHOLD;
