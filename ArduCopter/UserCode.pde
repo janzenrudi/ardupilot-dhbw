@@ -5,9 +5,8 @@
 #ifdef USERHOOK_INIT
 void userhook_init()
 {
-    USART5->begin(9600);
-    // put your initialisation code here
-    // this will be called once at start-up
+	hfSonar = new HF_Sonar();
+	hfSonar.init();
 }
 #endif
 
@@ -28,20 +27,8 @@ void userhook_50Hz()
 #ifdef USERHOOK_MEDIUMLOOP
 void userhook_MediumLoop()
 {
-    iAvailable = USART5->available();
-    if(iAvailable >= 3)
-    {
-        iHighbyte = USART5->read();
-        if(iHighbyte == 100)
-        {
-            iHighbyte = USART5->read();
-            iLowbyte = USART5->read();
-            iDistance = (iHighbyte << 8) + iLowbyte;
-            
-            g.sensor1 = iDistance;
-        }
-    }
-    // put your 10Hz code here
+	g.sensor1 = hfSonar.read();
+
 }
 #endif
 
