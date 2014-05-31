@@ -6,6 +6,8 @@
 void userhook_init()
 {
     USART5->begin(9600);
+	
+	hfLed = new HF_Led();
     // put your initialisation code here
     // this will be called once at start-up
 }
@@ -21,7 +23,7 @@ void userhook_FastLoop()
 #ifdef USERHOOK_50HZLOOP
 void userhook_50Hz()
 {
-    // put your 50Hz code here
+    pMSd_g->write_hott((battery.voltage() * 100.0f));
 }
 #endif
 
@@ -55,6 +57,6 @@ void userhook_SlowLoop()
 #ifdef USERHOOK_SUPERSLOWLOOP
 void userhook_SuperSlowLoop()
 {
-    // put your 1Hz code here
+    led_flash(battery.voltage() * 100.0f);
 }
 #endif

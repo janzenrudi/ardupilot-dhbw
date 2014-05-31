@@ -11,6 +11,9 @@ int16_t iHighbyte = 0;
 int16_t iLowbyte = 0;
 int16_t iDistance = 0;
 
+HF_Led *hfLed;
+float hf_curVolt = 12;
+
 #if WII_CAMERA == 1
 WiiCamera           ircam;
 int                 WiiRange=0;
