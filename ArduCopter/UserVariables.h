@@ -6,8 +6,6 @@
 // variables
 #ifdef USERHOOK_VARIABLES
 
-HF_Sonar *hfSonar;
-
 HF_Led *hfLed;
 float hf_curVolt = 12;
 

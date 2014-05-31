@@ -44,6 +44,6 @@ void userhook_SlowLoop()
 #ifdef USERHOOK_SUPERSLOWLOOP
 void userhook_SuperSlowLoop()
 {
-    led_flash(battery.voltage() * 100.0f);
+    hfLed.led_flash(battery.voltage() * 100.0f);
 }
 #endif
