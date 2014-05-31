@@ -30,20 +30,7 @@ void userhook_50Hz()
 #ifdef USERHOOK_MEDIUMLOOP
 void userhook_MediumLoop()
 {
-    iAvailable = USART5->available();
-    if(iAvailable >= 3)
-    {
-        iHighbyte = USART5->read();
-        if(iHighbyte == 100)
-        {
-            iHighbyte = USART5->read();
-            iLowbyte = USART5->read();
-            iDistance = (iHighbyte << 8) + iLowbyte;
-            
-            g.sensor1 = iDistance;
-        }
-    }
-    // put your 10Hz code here
+
 }
 #endif
 
