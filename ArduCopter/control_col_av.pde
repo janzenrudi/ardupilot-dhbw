@@ -215,7 +215,7 @@ static int16_t brakeFunction(const int16_t iDistance_p)
 	int16_t iNormedAngle_l = 0;	
 	int16_t iAngle_l = 0;
 	//Funktion f(x)= -x+1
-	iNormedAngle_l = -iNormedDistance+1;
+	iNormedAngle_l = -iNormedDistance_l+1;
 	/*
 	//Funktion f(x)=1/(10x) fuer x < 0.5 und f(x)=-0.4*x+0.4 fuer x >= 0.5
 	if(iDistance_p < DISTANCE_THRESHOLD/2)
