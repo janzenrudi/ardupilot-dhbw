@@ -152,6 +152,8 @@
 #include <AP_Parachute.h>		// Parachute release library
 #endif
 
+#include <microSD.h>
+
 // AP_HAL to Arduino compatibility layer
 #include "compat.h"
 // Configuration
