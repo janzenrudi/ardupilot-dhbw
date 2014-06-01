@@ -6,6 +6,7 @@
 void userhook_init()
 {
     USART5->begin(9600);
+    mSD = new MicroSD();
     // put your initialisation code here
     // this will be called once at start-up
 }
