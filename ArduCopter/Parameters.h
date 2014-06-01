@@ -439,7 +439,7 @@ public:
     AP_Int8                 acro_trainer;
 
     // Sonar Sensors SFR01
-    AP_Int16                sensor1;
+    AP_Int16 	            sensor1;
     AP_Int16                sensor2;
     AP_Int16                sensor3;
     AP_Int16                sensor4;

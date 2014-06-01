@@ -33,13 +33,13 @@ static void col_av_run()
         attitude_control.set_throttle_out(0, false);
         return;
     }
-
+    
     // convert pilot input to lean angles
     // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
     
     int16_t pitch_angle = brakeFunction(g.sensor1);
-    //Test2
-    if(g.sensor1 < 100)
+    
+    if(pitch_angle != 0)
     {
         get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
     }
@@ -211,11 +211,18 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
 
 static int16_t brakeFunction(const int16_t iDistance_p)
 {
-	int16_t iNormedDistance_l = iDistance_p / DISTANCE_THRESHOLD;
-	int16_t iNormedAngle_l = 0;	
+	double iNormedDistance_l = double(iDistance_p) / double(DISTANCE_THRESHOLD);
+	double iNormedAngle_l = 0;	
 	int16_t iAngle_l = 0;
 	//Funktion f(x)= -x+1
-	iNormedAngle_l = -iNormedDistance_l+1;
+	if(iNormedDistance_l < 1)
+	{
+		iNormedAngle_l = -iNormedDistance_l+1;
+	}
+	else
+	{
+		iNormedAngle_l = 0;
+	}
 	/*
 	//Funktion f(x)=1/(10x) fuer x < 0.5 und f(x)=-0.4*x+0.4 fuer x >= 0.5
 	if(iDistance_p < DISTANCE_THRESHOLD/2)
@@ -227,7 +234,7 @@ static int16_t brakeFunction(const int16_t iDistance_p)
 		iNormedAngle_l = -0.4*iNormedDistance_l + 0.4;
 	}
 	*/
-	iAngle_l = iNormedAngle_l * MAX_ANGLE;
+	iAngle_l = int16_t(iNormedAngle_l * MAX_ANGLE);
 	
 	return iAngle_l; 
 }
