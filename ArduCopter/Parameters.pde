@@ -1073,49 +1073,49 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @DisplayName: Distance Sensor 1
     // @Description: The actual distance measured from Sensor 1
     // @Range: 0 - 600 cm
-    GSCALAR(sensor1, "SENSOR1", SENSOR_DEFAULT),
+    //GSCALAR(sensor1, "SENSOR1", SENSOR_DEFAULT),
 
     // @Param: SENSOR2
     // @DisplayName: Distance Sensor 2
     // @Description: The actual distance measured from Sensor 2
     // @Range: 0 - 600 cm
-    GSCALAR(sensor2, "SENSOR2", SENSOR_DEFAULT),
+    //GSCALAR(sensor2, "SENSOR2", SENSOR_DEFAULT),
 
     // @Param: SENSOR3
     // @DisplayName: Distance Sensor 3
     // @Description: The actual distance measured from Sensor 3
     // @Range: 0 - 600 cm
-    GSCALAR(sensor3, "SENSOR3", SENSOR_DEFAULT),
+    //GSCALAR(sensor3, "SENSOR3", SENSOR_DEFAULT),
 
     // @Param: SENSOR4
     // @DisplayName: Distance Sensor 4
     // @Description: The actual distance measured from Sensor 4
     // @Range: 0 - 600 cm
-    GSCALAR(sensor4, "SENSOR4", SENSOR_DEFAULT),
+    //GSCALAR(sensor4, "SENSOR4", SENSOR_DEFAULT),
 
     // @Param: SENSOR5
     // @DisplayName: Distance Sensor 5
     // @Description: The actual distance measured from Sensor 5
     // @Range: 0 - 600 cm
-    GSCALAR(sensor5, "SENSOR5", SENSOR_DEFAULT),
+    //GSCALAR(sensor5, "SENSOR5", SENSOR_DEFAULT),
 
     // @Param: SENSOR6
     // @DisplayName: Distance Sensor 6
     // @Description: The actual distance measured from Sensor 6
     // @Range: 0 - 600 cm
-    GSCALAR(sensor6, "SENSOR6", SENSOR_DEFAULT),
+    //GSCALAR(sensor6, "SENSOR6", SENSOR_DEFAULT),
 
     // @Param: SENSOR7
     // @DisplayName: Distance Sensor 7
     // @Description: The actual distance measured from Sensor 7
     // @Range: 0 - 600 cm
-    GSCALAR(sensor7, "SENSOR7", SENSOR_DEFAULT),
+    //GSCALAR(sensor7, "SENSOR7", SENSOR_DEFAULT),
 
     // @Param: SENSOR8
     // @DisplayName: Distance Sensor 8
     // @Description: The actual distance measured from Sensor 8
     // @Range: 0 - 600 cm
-    GSCALAR(sensor8, "SENSOR8", SENSOR_DEFAULT),
+    //GSCALAR(sensor8, "SENSOR8", SENSOR_DEFAULT),
 
     AP_VAREND
 };
