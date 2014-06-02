@@ -11,6 +11,14 @@ int16_t iHighbyte = 0;
 int16_t iLowbyte = 0;
 int16_t iDistance = 0;
 
+int16_t iReadByte = 0;
+
+int8_t bStartByte = 255; 	// 1111 1111
+int8_t bStopByte = 254;		// 1111 1110
+int8_t bValidFlags = 0;
+
+int16_t aiSensors[8] = {0};
+
 MicroSD * mSD;
 
 #if WII_CAMERA == 1
