@@ -77,8 +77,8 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     // des Schwellwerts durchgeführt. Der Schwellwert gibt den minimalen
     // Abstand des Hexacopters von einem Objekt an.
     // Winkel = 0 -> Horizontal
-    // Winkel > 0 -> Pitch: nach vorne neigen, Roll: nach rechts neigen
-    // Winkel < 0 -> Pitch: nach hinten neigen, Roll: nach links neigen
+    // Winkel > 0 -> Pitch: nach hinten neigen (nose up), Roll: nach rechts neigen
+    // Winkel < 0 -> Pitch: nach vorne neigen (nose down), Roll: nach links neigen
 
     // Winkel-Variablen
     int16_t iRollDistance_l = 0;        
@@ -92,8 +92,6 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     if(g.sensor1 < DISTANCE_THRESHOLD)
     {
         aiPitchAngles_l[0] = brakeFunction(g.sensor1);    //Berechnung des Pitch-Winkels
-
-        aiPitchAngles_l[0] *= -1;   // Ausweichen nach hinten
     }
 	
     // Sensor vorne rechts
@@ -106,7 +104,6 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
         aiPitchAngles_l[1] = brakeFunction(iPitchDistance_l);
         
         aiRollAngles_l[1] *= -1;    // Ausweichen nach links
-        aiPitchAngles_l[1] *= -1;   // Ausweichen nach hinten
         
     }
     
@@ -120,12 +117,15 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
         aiPitchAngles_l[2] = brakeFunction(iPitchDistance_l);
 
         aiRollAngles_l[2] *= -1;    // Ausweichen nach links
+        aiPitchAngles_l[2] *= -1;		// Ausweichen nach vorne
     }
 
     // Sensor hinten
     if(g.sensor4 < DISTANCE_THRESHOLD)
     {
         aiPitchAngles_l[3] = brakeFunction(g.sensor4); 
+        
+        aiPitchAngles_l[3] *= -1;	// Ausweichen nach vorne
     }
 
     // Sensor hinten links
@@ -136,6 +136,8 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     
         aiRollAngles_l[4] = brakeFunction(iRollDistance_l);
         aiPitchAngles_l[4] = brakeFunction(iPitchDistance_l);
+        
+        aiPitchAngles_l[4] *= -1;	// Ausweichen nach vorne
     }
 
     // Sensor vorne links
@@ -146,8 +148,6 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     
         aiRollAngles_l[5] = brakeFunction(iRollDistance_l);
         aiPitchAngles_l[5] = brakeFunction(iPitchDistance_l);
-
-        aiPitchAngles_l[5] *= -1;   //Ausweichen nach hinten
     }
     
     
@@ -209,10 +209,10 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     }
 }
 
-static int16_t brakeFunction(const int16_t iDistance_p)
+static int16_t brakeFunction(int16_t iDistance_p)
 {
-	double iNormedDistance_l = double(iDistance_p) / double(DISTANCE_THRESHOLD);
-	double iNormedAngle_l = 0;	
+	float iNormedDistance_l = float(iDistance_p) / float(DISTANCE_THRESHOLD);
+	float iNormedAngle_l = 0;	
 	int16_t iAngle_l = 0;
 	//Funktion f(x)= -x+1
 	if(iNormedDistance_l < 1)
