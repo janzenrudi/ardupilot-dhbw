@@ -1,7 +1,7 @@
 /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
 #define UART5 hal.uartC
-#define NUMBER_OF_SENSORS 6
+#define NUMBER_OF_SENSORS 1
 #define LENGTH_OF_OVERHEAD 3
 
 #ifdef USERHOOK_INIT
@@ -9,6 +9,8 @@ void userhook_init()
 {
     UART5->begin(9600);
     mSD = new MicroSD();
+    
+    g.sensor1 = 150;
     // put your initialisation code here
     // this will be called once at start-up
 }
@@ -45,11 +47,13 @@ void userhook_MediumLoop()
 		// Erstes Byte einlesen
 		iReadByte = UART5->read();
 		
+		
 		// Erstes eingelesenes Byte auf Startbyte ueberpruefen
 		if(iReadByte == bStartByte)
 		{
 			// ValidByte einlesen
 			bValidFlags = UART5->read(); 
+			
 			 
 			// Abstandswerte der Sensoren einlesen 
 			for(int8_t index=0 ; index < NUMBER_OF_SENSORS ; ++index)
@@ -74,9 +78,9 @@ void userhook_MediumLoop()
 				// wenn das Valid-Bit = true ist.
 				
 				// Sensor 1
-				if((bValidFlags & 0x80)>>7)
+				if(!((bValidFlags & 0x80)>>7))
 				{
-					g.sensor1 = aiSensors[1];
+					g.sensor1 = aiSensors[0];
 				}
 				else
 				{
@@ -84,19 +88,19 @@ void userhook_MediumLoop()
 				}
 				
 				// Sensor 2
-				if((bValidFlags & 0x40)>>6)
+				if(!((bValidFlags & 0x40)>>6))
 				{
-					g.sensor2 = aiSensors[2];
+					g.sensor2 = aiSensors[1];
 				}
 				else
 				{
 					g.sensor2 = -1; // Ungültiger Abstandswert
 				}
-				
+	
 				// Sensor 3
-				if((bValidFlags & 0x20)>>5)
+				if(!((bValidFlags & 0x20)>>5))
 				{
-					g.sensor3 = aiSensors[3];
+					g.sensor3 = aiSensors[2];
 				}
 				else
 				{
@@ -104,9 +108,9 @@ void userhook_MediumLoop()
 				}
 				
 				// Sensor 4
-				if((bValidFlags & 0x10)>>4)
+				if(!((bValidFlags & 0x10)>>4))
 				{
-					g.sensor4 = aiSensors[2];
+					g.sensor4 = aiSensors[3];
 				}
 				else
 				{
@@ -114,9 +118,9 @@ void userhook_MediumLoop()
 				}
 				
 				// Sensor 5
-				if((bValidFlags & 0x08)>>3)
+				if(!((bValidFlags & 0x08)>>3))
 				{
-					g.sensor5 = aiSensors[2];
+					g.sensor5 = aiSensors[4];
 				}
 				else
 				{
@@ -124,9 +128,9 @@ void userhook_MediumLoop()
 				}
 				
 				// Sensor 6
-				if((bValidFlags & 0x04)>>2)
+				if(!((bValidFlags & 0x04)>>2))
 				{
-					g.sensor6 = aiSensors[2];
+					g.sensor6 = aiSensors[5];
 				}
 				else
 				{
@@ -134,24 +138,25 @@ void userhook_MediumLoop()
 				}
 				
 				// Sensor 7
-				if((bValidFlags & 0x02)>>1)
+				if(!((bValidFlags & 0x02)>>1))
 				{
-					g.sensor7 = aiSensors[2];
+					g.sensor7 = aiSensors[6];
 				}
 				else
 				{
 					g.sensor7 = -1; // Ungültiger Abstandswert
-				}
+				}	
 				
 				// Sensor 8
-				if((bValidFlags & 0x01))
+				if(!(bValidFlags & 0x01))
 				{
-					g.sensor8 = aiSensors[2];
+					g.sensor8 = aiSensors[7];
 				}
 				else
 				{
 					g.sensor8 = -1; // Ungültiger Abstandswert
 				}
+				
 			} // if Stopbyte
 		} // if Startbyte
 		
@@ -186,6 +191,14 @@ void userhook_SlowLoop()
 #ifdef USERHOOK_SUPERSLOWLOOP
 void userhook_SuperSlowLoop()
 {
+	if(g.sensor1 == 0)
+	{
+		g.sensor1 = 150;	
+	}
+	else
+	{
+		g.sensor1 = g.sensor1-1;
+	}
     // put your 1Hz code here
 }
 #endif
