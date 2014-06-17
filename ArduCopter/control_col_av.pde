@@ -37,15 +37,29 @@ static void col_av_run()
     // convert pilot input to lean angles
     // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
     
-    int16_t pitch_angle = brakeFunction(g.sensor1);
+    int16_t roll_angle;
+    int16_t pitch_angle;
     
-    if(pitch_angle != 0)
+    // Berechnung des Roll- und Pitch-Winkels für die Ausweichbewegung
+    // Sollte kein Ausweichen notwendig sein, sind beide Winkel 0.
+    getAnglesSensors(roll_angle, pitch_angle);
+    
+    // Abhängig davon ob ein Ausweichen notwendig ist wird der entsprechende Winkel eingesetzt.
+    if(roll_angle == 0 && pitch_angle == 0)
     {
-        get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
+    	get_pilot_desired_lean_angles(g.rc_1.control_in, g.rc_2.control_in, target_roll, target_pitch);
+    }
+    else if(roll_angle != 0 && pitch_angle != 0)
+    {
+    	get_pilot_desired_lean_angles(roll_angle, pitch_angle, target_roll, target_pitch);
+    }
+    else if(roll_angle != 0 && pitch_angle == 0)
+    {
+    	get_pilot_desired_lean_angles(roll_angle, g.rc_2.control_in, target_roll, target_pitch);
     }
     else
     {
-        get_pilot_desired_lean_angles(g.rc_1.control_in, g.rc_2.control_in, target_roll, target_pitch);
+    	get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
     }
 
     // get pilot's desired yaw rate
@@ -183,6 +197,10 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     if(iMaxRollAngle_l != 0 && iMinRollAngle_l != 0)
     {
     	iRollAngle_p = iMaxRollAngle_l + iMinRollAngle_l;
+    	if(-270 < iRollAngle_p && iRollAngle_p < 270)
+    	{
+    		iRollAngle_p = 0;
+    	}
     }
     else if(iMaxRollAngle_l != 0 && iMinRollAngle_l == 0)
     {
@@ -198,6 +216,10 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     if(iMaxPitchAngle_l != 0 && iMinPitchAngle_l != 0)
     {
     	iPitchAngle_p = iMaxPitchAngle_l + iMinRollAngle_l;
+    	if(-270 < iPitchAngle_p && iPitchAngle_p < 270)
+    	{
+    		iPitchAngle_p = 0;
+    	}
     }
     else if(iMaxPitchAngle_l != 0 && iMinPitchAngle_l == 0)
     {
@@ -214,6 +236,8 @@ static int16_t brakeFunction(int16_t iDistance_p)
 	float iNormedDistance_l = float(iDistance_p) / float(DISTANCE_THRESHOLD);
 	float iNormedAngle_l = 0;	
 	int16_t iAngle_l = 0;
+	
+	/*
 	//Funktion f(x)= -x+1
 	if(iNormedDistance_l < 1)
 	{
@@ -223,7 +247,8 @@ static int16_t brakeFunction(int16_t iDistance_p)
 	{
 		iNormedAngle_l = 0;
 	}
-	/*
+	*/
+	
 	//Funktion f(x)=1/(10x) fuer x < 0.5 und f(x)=-0.4*x+0.4 fuer x >= 0.5
 	if(iDistance_p < DISTANCE_THRESHOLD/2)
 	{
@@ -233,7 +258,7 @@ static int16_t brakeFunction(int16_t iDistance_p)
 	{
 		iNormedAngle_l = -0.4*iNormedDistance_l + 0.4;
 	}
-	*/
+	
 	iAngle_l = int16_t(iNormedAngle_l * MAX_ANGLE);
 	
 	return iAngle_l; 

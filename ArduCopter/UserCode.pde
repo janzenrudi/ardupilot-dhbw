@@ -1,7 +1,7 @@
 /// -*- tab-width: 4; Mode: C++; c-basic-offset: 4; indent-tabs-mode: nil -*-
 
 #define UART5 hal.uartC
-#define NUMBER_OF_SENSORS 1
+#define NUMBER_OF_SENSORS 6
 #define LENGTH_OF_OVERHEAD 3
 
 #ifdef USERHOOK_INIT
@@ -51,9 +51,11 @@ void userhook_MediumLoop()
 		// Erstes eingelesenes Byte auf Startbyte ueberpruefen
 		if(iReadByte == bStartByte)
 		{
+			//mSD->write_muell(iReadByte);
+			
 			// ValidByte einlesen
 			bValidFlags = UART5->read(); 
-			
+			//mSD->write_muell(iReadByte);
 			 
 			// Abstandswerte der Sensoren einlesen 
 			for(int8_t index=0 ; index < NUMBER_OF_SENSORS ; ++index)
@@ -62,6 +64,7 @@ void userhook_MediumLoop()
 				aiSensors[index] = (iReadByte << 8);
 				iReadByte = UART5->read();
 				aiSensors[index] += iReadByte;
+				//mSD->write_distance(aiSensors[index]);
 			}
 			
 			// Letztes Byte einlesen
@@ -74,6 +77,7 @@ void userhook_MediumLoop()
 			
 			if(iReadByte == bStopByte)
 			{
+			//mSD->write_muell(iReadByte);
 				// Der Abstandsert eines Sensors wird nur gespeichert, 
 				// wenn das Valid-Bit = true ist.
 				
