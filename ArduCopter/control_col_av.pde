@@ -177,7 +177,7 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     	{
     		iMinRollAngle_l = aiRollAngles_l[i];
     	}
-    	else
+    	else if(aiRollAngles_l[i] > iMaxRollAngle_l)
     	{
     		iMaxRollAngle_l = aiRollAngles_l[i];
     	}
@@ -186,7 +186,7 @@ static bool getAnglesSensors(int16_t &iRollAngle_p, int16_t &iPitchAngle_p)
     	{
     		iMinPitchAngle_l = aiPitchAngles_l[i];
     	}
-    	else
+    	else if(aiPitchAngles_l[i] > iMaxPitchAngle_l)
     	{
     		iMaxPitchAngle_l = aiPitchAngles_l[i];
     	}
