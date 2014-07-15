@@ -4,7 +4,7 @@
  * control_col_av.pde - init and run calls for stabilize flight mode
  */
  
-#define DISTANCE_THRESHOLD 100
+#define DISTANCE_THRESHOLD 150
 #define MAX_ANGLE 4500
 #define THIRTY_DEGREE_IN_RADIAN 0.52359878
 
@@ -37,7 +37,17 @@ static void col_av_run()
     // convert pilot input to lean angles
     // To-Do: convert get_pilot_desired_lean_angles to return angles as floats
     
-    int16_t roll_angle;
+    int16_t pitch_angle = brakeFunction(g.sensor1);
+
+    if(g.sensor1 < DISTANCE_THRESHOLD)
+    {
+        get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
+    }
+    else
+    {
+        get_pilot_desired_lean_angles(g.rc_1.control_in, g.rc_2.control_in, target_roll, target_pitch);
+    }
+/*    int16_t roll_angle;
     int16_t pitch_angle;
     
     // Berechnung des Roll- und Pitch-Winkels für die Ausweichbewegung
@@ -60,7 +70,7 @@ static void col_av_run()
     else
     {
     	get_pilot_desired_lean_angles(g.rc_1.control_in, pitch_angle, target_roll, target_pitch);
-    }
+    }*/
 
     // get pilot's desired yaw rate
     target_yaw_rate = get_pilot_desired_yaw_rate(g.rc_4.control_in);

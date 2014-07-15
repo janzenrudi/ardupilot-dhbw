@@ -20,6 +20,7 @@ int8_t bValidFlags = 0;
 int16_t aiSensors[8] = {0};
 
 MicroSD * mSD;
+HF_Led *hfLed;
 
 #if WII_CAMERA == 1
 WiiCamera           ircam;

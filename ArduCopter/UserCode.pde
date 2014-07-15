@@ -9,6 +9,7 @@ void userhook_init()
 {
     UART5->begin(9600);
     mSD = new MicroSD();
+    hfLed = new HF_Led();
     
     g.sensor1 = 150;
     // put your initialisation code here
@@ -26,7 +27,7 @@ void userhook_FastLoop()
 #ifdef USERHOOK_50HZLOOP
 void userhook_50Hz()
 {
-    // put your 50Hz code here
+    hfLed->led_flash((battery.voltage() * 100.0f));
 }
 #endif
 
